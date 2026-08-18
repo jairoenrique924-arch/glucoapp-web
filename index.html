@@ -7,6 +7,13 @@
 <meta name="description" content="GlucoApp: registra tu glucosa, medicación y citas médicas en un solo lugar. Descarga el APK gratis.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<script>
+  (function(){
+    var saved = localStorage.getItem('glucoapp-theme');
+    var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    if(theme === 'dark'){ document.documentElement.setAttribute('data-theme','dark'); }
+  })();
+</script>
 <style>
   :root{
     --bg: #eef3f3;
@@ -18,9 +25,18 @@
     --green: #1f9d64;
     --amber: #d98324;
     --red: #dd4b3e;
+    --nav-bg: rgba(238,243,243,0.85);
     --mono: 'JetBrains Mono', monospace;
     --display: 'Space Grotesk', sans-serif;
     --body: 'Inter', sans-serif;
+  }
+  :root[data-theme="dark"]{
+    --bg: #0a0d12;
+    --bg-raised: #10141b;
+    --line: #1e252f;
+    --ink: #eef1f5;
+    --ink-dim: #8b94a3;
+    --nav-bg: rgba(10,13,18,0.85);
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   html{scroll-behavior:smooth;}
@@ -30,6 +46,7 @@
     font-family:var(--body);
     line-height:1.5;
     -webkit-font-smoothing:antialiased;
+    transition:background-color .2s ease, color .2s ease;
   }
   a{color:inherit;}
   .wrap{max-width:1080px; margin:0 auto; padding:0 24px;}
@@ -37,13 +54,23 @@
   /* NAV */
   header{
     position:sticky; top:0; z-index:50;
-    background:rgba(238,243,243,0.85);
+    background:var(--nav-bg);
     backdrop-filter:blur(10px);
     border-bottom:1px solid var(--line);
+    transition:background-color .2s ease, border-color .2s ease;
   }
   nav.wrap{display:flex; align-items:center; justify-content:space-between; height:68px;}
   .logo{display:flex; align-items:center; gap:10px; font-family:var(--display); font-weight:700; font-size:1.15rem; letter-spacing:-0.01em;}
   .logo-mark{width:12px; height:12px; border-radius:50%; background:var(--teal); box-shadow:0 0 0 4px rgba(15,118,110,0.15);}
+  .theme-toggle{
+    width:38px; height:38px; border-radius:50%; border:1px solid var(--line);
+    background:var(--bg-raised); display:flex; align-items:center; justify-content:center;
+    cursor:pointer; font-size:1rem; line-height:1; transition:border-color .15s ease, transform .15s ease;
+  }
+  .theme-toggle:hover{border-color:var(--teal); transform:translateY(-1px);}
+  .theme-toggle .icon-dark{display:none;}
+  :root[data-theme="dark"] .theme-toggle .icon-light{display:none;}
+  :root[data-theme="dark"] .theme-toggle .icon-dark{display:inline;}
   .nav-cta{
     background:var(--teal); color:#ffffff; font-weight:600; font-size:0.9rem;
     padding:10px 18px; border-radius:100px; text-decoration:none;
@@ -214,7 +241,9 @@
   @media (max-width:860px){
     .hero-grid{grid-template-columns:1fr;}
     .feature-grid{grid-template-columns:1fr;}
-    .shot-grid{grid-template-columns:1fr;}
+    .shot-grid{grid-template-columns:repeat(2,1fr); gap:12px;}
+    .shot{padding:8px;}
+    .shot-caption{font-size:0.78rem; padding:10px 4px 4px;}
     .plans-grid{grid-template-columns:1fr;}
     .compare-table{font-size:0.78rem;}
     .compare-table th, .compare-table td{padding:10px 10px;}
@@ -233,8 +262,12 @@
 <header>
   <nav class="wrap">
     <div class="logo"><span class="logo-mark"></span>GlucoApp</div>
-    <div style="display:flex; align-items:center; gap:24px;">
+    <div style="display:flex; align-items:center; gap:16px;">
       <a href="#planes" style="text-decoration:none; color:var(--ink-dim); font-size:0.9rem;">Planes</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Cambiar a modo oscuro">
+        <span class="icon-light">🌙</span>
+        <span class="icon-dark">☀️</span>
+      </button>
       <a href="#descarga" class="nav-cta">Descargar APK</a>
     </div>
   </nav>
@@ -444,6 +477,22 @@
     </div>
   </div>
 </footer>
+
+<script>
+  var toggleBtn = document.getElementById('themeToggle');
+  toggleBtn.addEventListener('click', function(){
+    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    if(isDark){
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('glucoapp-theme', 'light');
+      toggleBtn.setAttribute('aria-label','Cambiar a modo oscuro');
+    } else {
+      document.documentElement.setAttribute('data-theme','dark');
+      localStorage.setItem('glucoapp-theme', 'dark');
+      toggleBtn.setAttribute('aria-label','Cambiar a modo claro');
+    }
+  });
+</script>
 
 </body>
 </html>
