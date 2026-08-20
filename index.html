@@ -73,7 +73,7 @@
   :root[data-theme="dark"] .theme-toggle .icon-dark{display:inline;}
   .nav-cta{
     background:var(--teal); color:#ffffff; font-weight:600; font-size:0.9rem;
-    padding:10px 18px; border-radius:100px; text-decoration:none;
+    padding:10px 18px; border-radius:100px; text-decoration:none; white-space:nowrap;
     transition:transform .15s ease, box-shadow .15s ease;
   }
   .nav-cta:hover{transform:translateY(-1px); box-shadow:0 6px 20px rgba(15,118,110,0.25);}
@@ -248,6 +248,13 @@
     .compare-table{font-size:0.78rem;}
     .compare-table th, .compare-table td{padding:10px 10px;}
   }
+  @media (max-width:480px){
+    nav.wrap{height:auto; min-height:60px; padding-top:10px; padding-bottom:10px;}
+    .logo{font-size:1rem;}
+    .nav-plans-link{display:none;}
+    .nav-cta{padding:9px 14px; font-size:0.82rem;}
+    .theme-toggle{width:34px; height:34px; font-size:0.9rem;}
+  }
   @media (max-width:1080px) and (min-width:861px){
     .feature-grid{grid-template-columns:repeat(2,1fr);}
   }
@@ -263,7 +270,7 @@
   <nav class="wrap">
     <div class="logo"><span class="logo-mark"></span>GlucoApp</div>
     <div style="display:flex; align-items:center; gap:16px;">
-      <a href="#planes" style="text-decoration:none; color:var(--ink-dim); font-size:0.9rem;">Planes</a>
+      <a href="#planes" class="nav-plans-link" style="text-decoration:none; color:var(--ink-dim); font-size:0.9rem;">Planes</a>
       <button class="theme-toggle" id="themeToggle" type="button" aria-label="Cambiar a modo oscuro">
         <span class="icon-light">🌙</span>
         <span class="icon-dark">☀️</span>
